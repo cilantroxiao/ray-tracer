@@ -4,6 +4,7 @@
 #include "vec3.h"
 #include <iostream>
 
+//alias
 using color = vec3;
 
 void write_color(std::ostream& out, const color& pixel_color) {
@@ -12,7 +13,6 @@ void write_color(std::ostream& out, const color& pixel_color) {
     auto b = pixel_color.z();
 
     // Translate [0,1] to byte range [0,255]
-
     int rbyte = int(255.999 * r);
     int gbyte = int(255.999 * g);
     int bbyte = int(255.999 * b);
