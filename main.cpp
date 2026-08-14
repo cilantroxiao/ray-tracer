@@ -7,24 +7,33 @@
 // a = d . d
 // b = -2d . (C - Q)
 // c = (C - Q) . (C - Q) - r^2
-bool hit_sphere(const point3& center, double radius, const ray& r) {
+double hit_sphere(const point3& center, double radius, const ray& r) {
     vec3 oc = center - r.origin();
     auto d = r.direction();
 
-    auto a = dot(d, d);
-    auto b = -2.0 * dot(d, oc);
-    auto c = dot(oc, oc) - radius*radius;
+    auto a = d.length_squared();
+    auto h = dot(d, oc);
+    auto c = oc.length_squared() - radius*radius;
     //if discriminant 
     //        > 0, 2 real solutions (pass through)
     //        < 0, 0 real solutions (miss)
     //        = 0, 1 real solution  (tangent)
-    auto discriminant = b*b - 4*a*c;
+    auto discriminant = h*h - 4*a*c;
 
-    return (discriminant >= 0);
+    if (discriminant < 0){
+        return -1.0;
+    } else {
+        return (h - std::sqrt(discriminant) ) / a;
+    }
 }
 color ray_color(const ray& r){
-    if (hit_sphere(point3(0,0,-1), 0.5, r))
-        return color(1,0,0);
+    auto t = hit_sphere(point3(0,0,-1), 0.5, r);
+    if (t > 0.0) {
+        // P - C
+        // 3D point hit - center of sphere
+        vec3 N = unit_vector(r.at(t) - vec3(0,0,-1));
+        return 0.5*color(N.x()+1, N.y()+1, N.z()+1);
+    }
 
     vec3 unit_direction = unit_vector(r.direction());
     auto a = 0.5 * (unit_direction.y() + 1);
