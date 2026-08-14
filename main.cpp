@@ -12,7 +12,7 @@ bool hit_sphere(const point3& center, double radius, const ray& r) {
     auto d = r.direction();
 
     auto a = dot(d, d);
-    auto b = -2 * dot(d, oc);
+    auto b = -2.0 * dot(d, oc);
     auto c = dot(oc, oc) - radius*radius;
     //if discriminant 
     //        > 0, 2 real solutions (pass through)
@@ -20,7 +20,7 @@ bool hit_sphere(const point3& center, double radius, const ray& r) {
     //        = 0, 1 real solution  (tangent)
     auto discriminant = b*b - 4*a*c;
 
-    return discriminant >= 0;
+    return (discriminant >= 0);
 }
 color ray_color(const ray& r){
     if (hit_sphere(point3(0,0,-1), 0.5, r))
@@ -42,7 +42,7 @@ int main() {
     int image_height = int(image_width / aspect_ratio);
     image_height = (image_height < 1) ? 1 : image_height;
     // Calculated aspect ratio can differ from ideal aspect ratio 
-    double calc_aspect_ratio = image_width / image_height;
+    double calc_aspect_ratio = double(image_width) / image_height;
 
     // Camera
 
