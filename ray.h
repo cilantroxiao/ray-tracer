@@ -12,8 +12,8 @@ class ray {
         const point3& origin() const { return orig; }
         const vec3& direction() const { return dir; }
 
-        // P = A + tb
-        // 3d position = origin + parameter * direction
+        // P = Q + t*d
+        // ray 3d position = origin + parameter * direction
         point3 at(double t) const {
             return orig + t*dir;
         }
